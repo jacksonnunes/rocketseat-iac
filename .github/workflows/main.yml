@@ -1,1 +1,47 @@
+name: Pulumi - CI
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        id: install-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+
+      - name: Install PNPM
+        id: install-pnpm
+        uses: pnpm/setup@v1
+        with:
+          version: 11
+
+      - name: Install Dependencies
+        id: install-dependencies
+        run: |
+          pnpm install
+
+      - name: Configure AWS Credentials
+        id: configure-aws-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
