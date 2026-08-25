@@ -1,6 +1,6 @@
 import * as aws from "@pulumi/aws";
 
-const bucket = new aws.s3.Bucket("rocketseat-iac", {
+const bucket = new aws.s3.Bucket("rocketseat.iac", {
   bucket: "rocketseat-iac",
   tags: {
     IAC: "true",
