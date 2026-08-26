@@ -52,6 +52,7 @@ jobs:
         with:
           command: up
           stack-name: stg
+          create-stack: true
           cloud-url: s3://state-pulumi-ftr-731560906954-us-east-2-an
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
